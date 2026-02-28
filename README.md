@@ -1,1 +1,38 @@
-# Elucidation01.github.io
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAfRX3AmeL_1zQw2OlyE52-nkSdgZ40NTQ",
+  authDomain: "feeling-slider.firebaseapp.com",
+  projectId: "feeling-slider",
+  storageBucket: "feeling-slider.firebasestorage.app",
+  messagingSenderId: "446978800358",
+  appId: "1:446978800358:web:eb163a5e07290d620e9927"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const stages = [
+"Hate","Dislike","Annoyance","Indifference",
+"Acquaintance","Friends Only","Best Friends",
+"Like You","Catching Feelings","Like-Like You",
+"Starting Crush","Crush","We Should Date",
+"Might Be In Love","In Love","I'd Die For You"
+];
+
+const slider = document.getElementById("slider");
+const stage = document.getElementById("stage");
+
+slider.oninput = async function() {
+  const value = this.value;
+  stage.innerText = stages[value - 1];
+
+  await addDoc(collection(db, "responses"), {
+    value: Number(value),
+    label: stages[value - 1],
+    timestamp: new Date()
+  });
+};
+</script>
